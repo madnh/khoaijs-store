@@ -98,17 +98,25 @@
     /**
      * Get data value
      * @param {string} name
-     * @param {*} default_value
-     * @returns {*}
+     * @param {*} [default_value]
+     * @returns {*|null}
      */
     Store.prototype.get = function (name, default_value) {
-        if (this.data.hasOwnProperty(name)) {
+        if (this.hasData(name)) {
             var value = this.data[name];
 
             return _.isObject(value) ? _.cloneDeep(value) : value;
         }
 
-        return default_value || null;
+        return arguments.length > 1 ? default_value : null;
+    };
+
+    /**
+     * @param {string} name
+     * @return {boolean}
+     */
+    Store.prototype.hasData = function (name) {
+        return this.data.hasOwnProperty(name);
     };
 
     /**
