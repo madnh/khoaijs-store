@@ -56,12 +56,10 @@
         var self = this;
         var data = {};
 
-        if (_.isString(dataName)) {
-            data[dataName] = dataValue;
-        } else if (_.isPlainObject(dataName)) {
+        if (_.isObject(dataName)) {
             data = dataName;
         } else {
-            throw new Error('Cannot detect what data to update: ' + dataName);
+            data[dataName] = dataValue;
         }
 
         _.each(data, function (value, path) {
