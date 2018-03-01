@@ -72,12 +72,14 @@
 
         this.changeSilent.apply(this, arguments);
 
-        if (this.shouldChange()) {
-            this.emitEvent('change', {
-                old_data: old_data,
-                new_data: this.getData()
-            });
+        if (!this.shouldChange()) {
+            return;
         }
+
+        this.emitEvent('change', {
+            old_data: old_data,
+            new_data: this.getData()
+        });
     };
 
     Store.prototype.triggerChange = function () {
@@ -115,6 +117,27 @@
      */
     Store.prototype.hasData = function (name) {
         return this.data.hasOwnProperty(name);
+    };
+
+    /**
+     * @param {string|array} names
+     * @return {boolean}
+     */
+    Store.prototype.remove = function (names) {
+        names = _.castArray(names);
+
+        this.data = _.omit(this.data, names);
+
+        this.triggerChange();
+    };
+
+    /**
+     * @param {{}} [data = {}]
+     */
+    Store.prototype.reset = function (data) {
+        this.data = data || {};
+
+        this.triggerChange();
     };
 
     /**
